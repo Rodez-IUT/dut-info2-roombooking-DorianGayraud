@@ -2,6 +2,7 @@ package xmlws.roombooking.xmltools;
 
 import org.junit.Before;
 import org.junit.Test;
+import xmlws.roombooking.xmltools.samples.RoomBookingDomParser;
 
 import java.io.IOException;
 import java.io.InputStream;

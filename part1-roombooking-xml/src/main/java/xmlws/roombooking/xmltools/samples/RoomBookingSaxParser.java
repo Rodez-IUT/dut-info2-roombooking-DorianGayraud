@@ -14,14 +14,16 @@ import java.io.InputStream;
  * Class for objects responsible of RoomBooking xml files parsing
  * SAX version
  */
-public class RoomBookingBasicSaxParser {
+public class RoomBookingSaxParser implements RoomBookingParser {
+
+    RoomBooking roomBooking = new RoomBooking();
 
     /**
      * Parse an xml file provided as an input stream
      *
      * @param inputStream the input stream corresponding to the xml file
      */
-    public void parse(InputStream inputStream) {
+    public RoomBooking parse(InputStream inputStream) {
         try {
             SAXParserFactory spf = SAXParserFactory.newInstance();
             spf.setNamespaceAware(true);
@@ -30,6 +32,7 @@ public class RoomBookingBasicSaxParser {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return roomBooking;
     }
 
     private class RoomBookingBasicHandler extends DefaultHandler {
@@ -39,11 +42,19 @@ public class RoomBookingBasicSaxParser {
                                  String qName,
                                  Attributes atts)
                 throws SAXException {
+            switch (localName) {
+                case "label" :
+                    roomBooking.setRoomLabel(localName);
+                    break;
+            }
             System.out.println("In element: "+localName);
         }
 
         public void characters(char ch[], int start, int length)
                 throws SAXException {
+            if (roomBooking.getRoomLabel().equals("label")) {
+                roomBooking.setRoomLabel(new String(ch, start, length));
+            }
             System.out.println(new String(ch, start, length));
         }
     }
